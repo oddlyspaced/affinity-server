@@ -5,9 +5,10 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import oddlyspaced.surge.data.ProviderParameter
+import oddlyspaced.surge.data.Provider
+import oddlyspaced.surge.data.parameter.ProviderParameter
 import oddlyspaced.surge.data.providers
-import oddlyspaced.surge.data.toProviderInstance
+import oddlyspaced.surge.data.parameter.toProviderInstance
 
 fun Route.providerRouting() {
     route("/provider") {

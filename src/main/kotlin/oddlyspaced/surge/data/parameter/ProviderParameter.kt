@@ -1,6 +1,10 @@
-package oddlyspaced.surge.data
+package oddlyspaced.surge.data.parameter
 
 import kotlinx.serialization.Serializable
+import oddlyspaced.surge.data.Location
+import oddlyspaced.surge.data.PhoneNumber
+import oddlyspaced.surge.data.Provider
+import oddlyspaced.surge.data.providers
 
 @Serializable
 data class ProviderParameter(
