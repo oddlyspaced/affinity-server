@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class Provider(
-    val id: Long, // unique id for provider
+    val id: Int, // unique id for provider
     val name: String, // name of provider
     val phone: PhoneNumber, // phone number of provider
     val location: Location,
