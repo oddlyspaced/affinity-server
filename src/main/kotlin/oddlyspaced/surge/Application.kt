@@ -12,7 +12,7 @@ import oddlyspaced.surge.plugins.*
 
 fun main() {
 //    scan()
-    embeddedServer(Netty, port = System.getenv("PORT").toInt(), module = Application::module)
+    embeddedServer(Netty, port = 4444, module = Application::module)
         .start(wait = true)
 }
 
