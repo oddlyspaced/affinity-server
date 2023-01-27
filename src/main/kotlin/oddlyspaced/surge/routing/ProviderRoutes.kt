@@ -11,10 +11,19 @@ import oddlyspaced.surge.data.toProviderInstance
 
 fun Route.providerRouting() {
     route("/provider") {
+        /**
+         * register a provider
+         */
         post("add") {
             val data = call.receive<ProviderParameter>()
             providers.add(data.toProviderInstance())
             call.respond(HttpStatusCode.OK, "Provider added successfully")
+        }
+        /**
+         * fetches list of all providers
+         */
+        get("all") {
+            call.respond(providers)
         }
     }
 }
