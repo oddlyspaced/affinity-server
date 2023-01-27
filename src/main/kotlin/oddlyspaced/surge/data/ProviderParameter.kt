@@ -1,5 +1,8 @@
 package oddlyspaced.surge.data
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class ProviderParameter(
     val name: String,
     val countryCode: String,
