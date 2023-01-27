@@ -1,4 +1,4 @@
-POST http://127.0.0.1:8080/provider/add
+POST http://127.0.0.1:4444/provider/add
 Content-Type: application/json
 
 {
@@ -10,10 +10,6 @@ Content-Type: application/json
   "services": ["tag1", "tag2"]
 }
 
-####
-#GET http://127.0.0.1:8080/node
-#Accept: application/json
-#
-####
-#GET http://127.0.0.1:8080/node/1
-#Accept: application/json
+###
+GET http://127.0.0.1:4444/provider/all
+Accept: application/json
