@@ -1,0 +1,19 @@
+POST http://127.0.0.1:8080/provider/add
+Content-Type: application/json
+
+{
+  "name": "PRovider NAme",
+  "countryCode": "+91",
+  "phoneNumber": "8888888888",
+  "lat": -0.2,
+  "lon": -0.1,
+  "services": ["tag1", "tag2"]
+}
+
+####
+#GET http://127.0.0.1:8080/node
+#Accept: application/json
+#
+####
+#GET http://127.0.0.1:8080/node/1
+#Accept: application/json
