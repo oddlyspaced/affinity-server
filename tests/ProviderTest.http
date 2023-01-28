@@ -13,3 +13,7 @@ Content-Type: application/json
 ###
 GET http://127.0.0.1:4444/provider/all
 Accept: application/json
+
+###
+GET http://127.0.0.1:4444/provider/dummy
+Accept: application/json
