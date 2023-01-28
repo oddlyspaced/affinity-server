@@ -11,8 +11,8 @@ data class ProviderParameter(
     val name: String,
     val countryCode: String,
     val phoneNumber: String,
-    val lat: Float,
-    val lon: Float,
+    val lat: Double,
+    val lon: Double,
     val services: ArrayList<String>
 )
 
