@@ -5,16 +5,20 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import oddlyspaced.surge.data.Location
-import oddlyspaced.surge.data.Provider
-import oddlyspaced.surge.data.distanceTo
+import oddlyspaced.surge.data.*
 import oddlyspaced.surge.data.parameter.ProviderParameter
 import oddlyspaced.surge.data.parameter.SearchParameter
-import oddlyspaced.surge.data.providers
 import oddlyspaced.surge.data.parameter.toProviderInstance
 
 fun Route.providerRouting() {
     route("/provider") {
+        /**
+         * fill dummy data
+         */
+        get("dummy") {
+            generateData()
+            call.respond(HttpStatusCode.OK, "Dummy Data Added")
+        }
         /**
          * register a provider
          */
