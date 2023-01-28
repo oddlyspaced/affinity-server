@@ -17,7 +17,7 @@ fun Route.providerRouting() {
          */
         get("dummy") {
             generateData()
-            call.respond(HttpStatusCode.OK, "Dummy Data Added")
+            call.respond(HttpStatusCode.OK, "Dummy data added. New length ${providers.size}")
         }
         /**
          * register a provider
