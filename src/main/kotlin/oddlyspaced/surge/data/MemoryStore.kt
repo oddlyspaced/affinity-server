@@ -1,7 +1,6 @@
 package oddlyspaced.surge.data
 
 import io.github.serpro69.kfaker.Faker
-import kotlin.random.Random
 
 val providers = arrayListOf<Provider>()
 
