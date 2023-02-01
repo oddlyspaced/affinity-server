@@ -3,7 +3,7 @@ package oddlyspaced.surge.plugins
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import oddlyspaced.surge.routing.providerRouting
+import oddlyspaced.surge.provider.routing.providerRouting
 
 fun Application.configureRouting() {
 

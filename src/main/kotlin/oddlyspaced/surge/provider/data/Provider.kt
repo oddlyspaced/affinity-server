@@ -1,4 +1,4 @@
-package oddlyspaced.surge.data
+package oddlyspaced.surge.provider.data
 
 import kotlinx.serialization.Serializable
 

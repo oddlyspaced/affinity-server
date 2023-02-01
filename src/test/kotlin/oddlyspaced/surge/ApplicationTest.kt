@@ -12,6 +12,7 @@ import io.ktor.client.statement.*
 import kotlin.test.*
 import io.ktor.server.testing.*
 import oddlyspaced.surge.plugins.*
+import oddlyspaced.surge.plugins.configureRouting
 
 class ApplicationTest {
     @Test

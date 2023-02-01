@@ -1,14 +1,14 @@
-package oddlyspaced.surge.routing
+package oddlyspaced.surge.provider.routing
 
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import oddlyspaced.surge.data.*
-import oddlyspaced.surge.data.parameter.ProviderParameter
-import oddlyspaced.surge.data.parameter.SearchParameter
-import oddlyspaced.surge.data.parameter.toProviderInstance
+import oddlyspaced.surge.provider.data.*
+import oddlyspaced.surge.provider.data.parameter.ProviderParameter
+import oddlyspaced.surge.provider.data.parameter.SearchParameter
+import oddlyspaced.surge.provider.data.parameter.toProviderInstance
 
 fun Route.providerRouting() {
     route("/provider") {

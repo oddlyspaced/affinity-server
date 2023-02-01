@@ -1,4 +1,4 @@
-package oddlyspaced.surge.data
+package oddlyspaced.surge.provider.data
 
 import io.github.serpro69.kfaker.Faker
 
