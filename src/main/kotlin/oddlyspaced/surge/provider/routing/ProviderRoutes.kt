@@ -11,6 +11,7 @@ import oddlyspaced.surge.provider.data.parameter.ProviderParameter
 import oddlyspaced.surge.provider.data.parameter.SearchParameter
 import oddlyspaced.surge.provider.data.parameter.toProviderInstance
 import oddlyspaced.surge.providers
+import oddlyspaced.surge.services
 
 fun Route.providerRouting() {
     route("/provider") {
@@ -34,6 +35,12 @@ fun Route.providerRouting() {
          */
         get("all") {
             call.respond(providers)
+        }
+        /**
+         * fetches list of all services
+         */
+        get("services") {
+            call.respond(services)
         }
         /**
          * searches for providers
