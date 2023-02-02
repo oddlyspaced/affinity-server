@@ -4,11 +4,16 @@ import io.github.serpro69.kfaker.Faker
 import oddlyspaced.surge.provider.data.Location
 import oddlyspaced.surge.provider.data.PhoneNumber
 import oddlyspaced.surge.provider.data.Provider
+import oddlyspaced.surge.provider.data.Service
 
 val providers = arrayListOf<Provider>()
 
 val sourcePoint = Location(26.882883,80.925594)
+private val serviceTagNames = arrayListOf<String>()
 
+val services = arrayListOf<Service>()
+
+// todo: improve and make this piece of logic more efficient
 fun generateData() {
     val fake = Faker()
     for (i in 0..25) {
@@ -29,6 +34,13 @@ fun generateData() {
                 }.flat()
             )
         )
+        serviceTagNames.addAll(providers[i].services)
+    }
+    serviceTagNames.flat().let {
+        serviceTagNames.clear()
+        it.forEach { service ->
+            services.add(Service(services.size.plus(1), service))
+        }
     }
 }
 
