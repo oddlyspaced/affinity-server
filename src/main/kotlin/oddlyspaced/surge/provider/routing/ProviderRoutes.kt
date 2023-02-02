@@ -11,6 +11,7 @@ import oddlyspaced.surge.provider.data.parameter.ProviderParameter
 import oddlyspaced.surge.provider.data.parameter.SearchParameter
 import oddlyspaced.surge.provider.data.parameter.toProviderInstance
 import oddlyspaced.surge.providers
+import oddlyspaced.surge.search
 import oddlyspaced.surge.services
 
 fun Route.providerRouting() {
@@ -48,17 +49,7 @@ fun Route.providerRouting() {
         get("search") {
             // add more params like name, phone, service
             val params = call.receive<SearchParameter>()
-            val providedLocation = Location(params.searchFromLat, params.searchFromLon)
-            val searchResult = arrayListOf<Provider>()
-            providers.forEach { provider ->
-                if (provider.location.distanceTo(providedLocation) <= params.limitDistance) {
-                    searchResult.add(provider)
-                }
-                if (searchResult.size == params.limitCount) {
-                    call.respond(HttpStatusCode.OK, searchResult)
-                }
-            }
-            call.respond(HttpStatusCode.OK, searchResult)
+            call.respond(HttpStatusCode.OK, search(params))
         }
     }
 }
