@@ -6,4 +6,5 @@ import kotlinx.serialization.Serializable
 data class Service(
     val id: Int,
     val tag: String,
+    val rank: Int,
 )
