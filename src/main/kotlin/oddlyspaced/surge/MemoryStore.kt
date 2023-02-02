@@ -1,6 +1,9 @@
-package oddlyspaced.surge.provider.data
+package oddlyspaced.surge
 
 import io.github.serpro69.kfaker.Faker
+import oddlyspaced.surge.provider.data.Location
+import oddlyspaced.surge.provider.data.PhoneNumber
+import oddlyspaced.surge.provider.data.Provider
 
 val providers = arrayListOf<Provider>()
 

@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import oddlyspaced.surge.provider.data.Location
 import oddlyspaced.surge.provider.data.PhoneNumber
 import oddlyspaced.surge.provider.data.Provider
-import oddlyspaced.surge.provider.data.providers
+import oddlyspaced.surge.providers
 
 @Serializable
 data class ProviderParameter(
