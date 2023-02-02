@@ -5,6 +5,7 @@ import oddlyspaced.surge.provider.data.Location
 import oddlyspaced.surge.provider.data.PhoneNumber
 import oddlyspaced.surge.provider.data.Provider
 import oddlyspaced.surge.provider.data.Service
+import oddlyspaced.surge.provider.data.parameter.SearchParameter
 
 val providers = arrayListOf<Provider>()
 
@@ -55,6 +56,26 @@ private fun generateServiceTags() {
             Service(services.size.plus(1), it.first, it.second)
         }
     }
+}
+
+/**
+ * handles search logic
+ * copies over the provider list and cuts them short based on the parameters
+ */
+fun search(params: SearchParameter): ArrayList<Provider> {
+    val results = arrayListOf<Provider>().apply { addAll(providers) }
+    results.removeAll { provider ->
+        doesProviderMatch(provider, params)
+    }
+    return results
+}
+
+/**
+ * checks if a provided provider instance qualifies with the provided search params
+ * todo: add logic
+ */
+private fun doesProviderMatch(provider: Provider, params: SearchParameter): Boolean {
+    return true
 }
 
 fun ArrayList<String>.flat(): ArrayList<String> {
