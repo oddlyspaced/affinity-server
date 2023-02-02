@@ -9,9 +9,8 @@ import oddlyspaced.surge.provider.data.Service
 val providers = arrayListOf<Provider>()
 
 val sourcePoint = Location(26.882883,80.925594)
-private val serviceTagNames = arrayListOf<String>()
-
 val services = arrayListOf<Service>()
+val serviceRankMap = hashMapOf<String, Int>()
 
 // todo: improve and make this piece of logic more efficient
 fun generateData() {
@@ -30,16 +29,30 @@ fun generateData() {
                     sourcePoint.lon + ((0..100).random() / 1000.0),
                 ),
                 (1..(1..10).random()).mapTo(arrayListOf()) {
-                    fake.adjective.positive()
+                    fake.job.field()
                 }.flat()
             )
         )
-        serviceTagNames.addAll(providers[i].services)
     }
-    serviceTagNames.flat().let {
-        serviceTagNames.clear()
-        it.forEach { service ->
-            services.add(Service(services.size.plus(1), service))
+    generateServiceTags()
+}
+
+private fun generateServiceTags() {
+    providers.forEach { provider ->
+        provider.services.forEach { service ->
+            serviceRankMap[service]?.let { count ->
+                serviceRankMap[service] = count + 1
+            } ?: run {
+                serviceRankMap[service] = 1
+            }
+        }
+    }
+    serviceRankMap.toList().sortedBy {
+        it.second
+    }.reversed().let { rankedServiceList ->
+        services.clear()
+        rankedServiceList.mapTo(services) {
+            Service(services.size.plus(1), it.first, it.second)
         }
     }
 }
