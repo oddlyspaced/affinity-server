@@ -66,7 +66,7 @@ private fun generateServiceTags() {
  */
 fun search(params: SearchParameter): ArrayList<Provider> {
     val results = arrayListOf<Provider>().apply { addAll(providers) }
-    results.removeAll { provider ->
+    results.filter { provider ->
         doesProviderMatch(provider, params)
     }
     return results
