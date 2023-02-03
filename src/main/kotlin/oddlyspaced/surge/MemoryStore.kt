@@ -77,7 +77,12 @@ fun search(params: SearchParameter): ArrayList<Provider> {
  * todo: add logic
  */
 private fun doesProviderMatch(provider: Provider, params: SearchParameter): Boolean {
-    return true
+    val doesProviderContainsFilter = (params.filterServices?.filter { service ->
+        provider.services.contains(service)
+    } ?: run {
+        arrayListOf()
+    }).size > 1
+    return (doesProviderContainsFilter && provider.areaServed.isPointInRadius(params.pickupPoint) && provider.areaServed.isPointInRadius(params.pickupPoint))
 }
 
 fun ArrayList<String>.flat(): ArrayList<String> {
