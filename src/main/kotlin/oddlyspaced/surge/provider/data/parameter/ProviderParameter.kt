@@ -1,6 +1,7 @@
 package oddlyspaced.surge.provider.data.parameter
 
 import kotlinx.serialization.Serializable
+import oddlyspaced.surge.provider.data.AreaServed
 import oddlyspaced.surge.provider.data.Location
 import oddlyspaced.surge.provider.data.PhoneNumber
 import oddlyspaced.surge.provider.data.Provider
@@ -13,7 +14,9 @@ data class ProviderParameter(
     val phoneNumber: String,
     val lat: Double,
     val lon: Double,
-    val services: ArrayList<String>
+    val services: ArrayList<String>,
+    val areaSource: Location,
+    val areaRadius: Double,
 )
 
 fun ProviderParameter.toProviderInstance(): Provider {
@@ -28,6 +31,10 @@ fun ProviderParameter.toProviderInstance(): Provider {
             this.lat,
             this.lon
         ),
-        this.services
+        this.services,
+        AreaServed(
+            areaSource,
+            areaRadius
+        )
     )
 }
