@@ -1,10 +1,7 @@
 package oddlyspaced.surge
 
 import io.github.serpro69.kfaker.Faker
-import oddlyspaced.surge.provider.data.Location
-import oddlyspaced.surge.provider.data.PhoneNumber
-import oddlyspaced.surge.provider.data.Provider
-import oddlyspaced.surge.provider.data.Service
+import oddlyspaced.surge.provider.data.*
 import oddlyspaced.surge.provider.data.parameter.SearchParameter
 
 val providers = arrayListOf<Provider>()
@@ -17,6 +14,10 @@ val serviceRankMap = hashMapOf<String, Int>()
 fun generateData() {
     val fake = Faker()
     for (i in 0..25) {
+        val tempProviderPos = Location(
+            sourcePoint.lat + ((0..100).random() / 1000.0),
+            sourcePoint.lon + ((0..100).random() / 1000.0),
+        )
         providers.add(
             Provider(
                 (providers.size + 1),
@@ -25,13 +26,14 @@ fun generateData() {
                     fake.phoneNumber.countryCode.code(),
                     fake.phoneNumber.phoneNumber()
                 ),
-                Location(
-                    sourcePoint.lat + ((0..100).random() / 1000.0),
-                    sourcePoint.lon + ((0..100).random() / 1000.0),
-                ),
+                tempProviderPos,
                 (1..(1..10).random()).mapTo(arrayListOf()) {
                     fake.job.field()
-                }.flat()
+                }.flat(),
+                AreaServed(
+                    tempProviderPos,
+                    (2..8).random().toDouble()
+                )
             )
         )
     }
