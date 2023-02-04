@@ -35,6 +35,7 @@ fun ProviderParameter.toProviderInstance(): Provider {
         AreaServed(
             areaSource,
             areaRadius
-        )
+        ),
+        true
     )
 }
