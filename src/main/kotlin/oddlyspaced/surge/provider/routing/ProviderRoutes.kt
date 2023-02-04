@@ -43,6 +43,14 @@ fun Route.providerRouting() {
         get("all") {
             call.respond(providers)
         }
+        get("specific") {
+            val params = call.parameters
+            providers.forEach {
+                if (it.id == params["id"]!!.toInt()) {
+                    call.respond(HttpStatusCode.OK, it)
+                }
+            }
+        }
         /**
          * fetches list of all services
          */
@@ -72,6 +80,16 @@ fun Route.providerRouting() {
             catch (e: Exception) {
                 e.printStackTrace()
             }
+        }
+        post("areaupdate") {
+            // id, sourceLat, sourceLon, radius
+            val params = call.parameters
+            providers.forEach { provider ->
+                if (provider.id == params["id"]!!.toInt()) {
+                    provider.areaServed = AreaServed(Location(params["sourceLat"]!!.toDouble(), params["sourceLon"]!!.toDouble()), params["radius"]!!.toDouble())
+                }
+            }
+            call.respond(HttpStatusCode.OK, "Location Updated Successfully")
         }
     }
 }
