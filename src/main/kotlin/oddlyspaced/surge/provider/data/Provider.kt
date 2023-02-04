@@ -12,5 +12,7 @@ data class Provider(
     val phone: PhoneNumber, // phone number of provider
     val location: Location,
     val services: ArrayList<String>, // tags of all the services the provider offers
-    val areaServed: AreaServed, // area served by provider
+    var areaServed: AreaServed, // area served by provider
+
+    val isActive: Boolean,
 )
