@@ -27,9 +27,15 @@ fun Route.providerRouting() {
          * register a provider
          */
         post("add") {
-            val data = call.receive<ProviderParameter>()
-            providers.add(data.toProviderInstance())
-            call.respond(HttpStatusCode.OK, "Provider added successfully")
+            try {
+                val data = call.receive<ProviderParameter>()
+                providers.add(data.toProviderInstance())
+                call.respond(HttpStatusCode.OK, "Provider added successfully")
+            }
+            catch (e: Exception) {
+                call.respond(HttpStatusCode.BadRequest, "Error!")
+                e.printStackTrace()
+            }
         }
         /**
          * fetches list of all providers
@@ -46,10 +52,26 @@ fun Route.providerRouting() {
         /**
          * searches for providers
          */
-        get("search") {
+        post("search") {
             // add more params like name, phone, service
-            val params = call.receive<SearchParameter>()
-            call.respond(HttpStatusCode.OK, search(params))
+            println("ok")
+            try {
+                println("omm : " + call.parameters.names())
+                val params = call.parameters
+                val searchParam = SearchParameter(
+                    params["limitCount"]!!.toInt(),
+                    params["limitDistance"]!!.toInt(),
+                    params["pickupLat"]!!.toDouble(),
+                    params["pickupLon"]!!.toDouble(),
+                    params["dropLat"]!!.toDouble(),
+                    params["dropLon"]!!.toDouble()
+                )
+                println(params)
+                call.respond(HttpStatusCode.OK, search(searchParam))
+            }
+            catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 }
