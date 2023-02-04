@@ -64,9 +64,8 @@ private fun generateServiceTags() {
  * handles search logic
  * copies over the provider list and cuts them short based on the parameters
  */
-fun search(params: SearchParameter): ArrayList<Provider> {
-    val results = arrayListOf<Provider>().apply { addAll(providers) }
-    results.filter { provider ->
+fun search(params: SearchParameter): List<Provider> {
+    val results = providers.filter { provider ->
         doesProviderMatch(provider, params)
     }
     return results
@@ -77,12 +76,12 @@ fun search(params: SearchParameter): ArrayList<Provider> {
  * todo: add logic
  */
 private fun doesProviderMatch(provider: Provider, params: SearchParameter): Boolean {
-    val doesProviderContainsFilter = (params.filterServices?.filter { service ->
-        provider.services.contains(service)
-    } ?: run {
-        arrayListOf()
-    }).size > 1
-    return (doesProviderContainsFilter && provider.areaServed.isPointInRadius(params.pickupPoint) && provider.areaServed.isPointInRadius(params.pickupPoint))
+//    val doesProviderContainsFilter = (params.filterServices?.filter { service ->
+//        provider.services.contains(service)
+//    } ?: run {
+//        arrayListOf("def")
+//    }).size > 1
+    return (provider.areaServed.isPointInRadius(Location(params.pickupLat, params.pickupLon)) && provider.areaServed.isPointInRadius(Location(params.dropLat, params.dropLon)))
 }
 
 fun ArrayList<String>.flat(): ArrayList<String> {
