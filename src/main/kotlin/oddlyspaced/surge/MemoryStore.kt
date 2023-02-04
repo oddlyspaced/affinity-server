@@ -33,7 +33,8 @@ fun generateData() {
                 AreaServed(
                     tempProviderPos,
                     (2..8).random().toDouble()
-                )
+                ),
+                true
             )
         )
     }
