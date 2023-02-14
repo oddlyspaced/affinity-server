@@ -41,7 +41,9 @@ fun Route.providerRouting() {
          * fetches list of all providers
          */
         get("all") {
-            call.respond(providers)
+            call.respond(providers.filter {
+                it.isActive
+            })
         }
         get("specific") {
             val params = call.parameters
