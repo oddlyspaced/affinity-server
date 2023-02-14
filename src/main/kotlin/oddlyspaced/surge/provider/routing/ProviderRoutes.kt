@@ -91,6 +91,26 @@ fun Route.providerRouting() {
                     provider.areaServed = AreaServed(Location(params["sourceLat"]!!.toDouble(), params["sourceLon"]!!.toDouble()), params["radius"]!!.toDouble())
                 }
             }
+            call.respond(HttpStatusCode.OK, "Area Updated Successfully")
+        }
+        post("statusupdate") {
+            // id isActive
+            val params = call.parameters
+            providers.forEach { provider ->
+                if (provider.id == params["id"]!!.toInt()) {
+                    provider.isActive = params["isActive"]!!.toBoolean()
+                }
+            }
+            call.respond(HttpStatusCode.OK, "Status Updated Successfully")
+        }
+        post("locationupdate") {
+            val params = call.parameters
+            // id lat lon
+            providers.forEach { provider ->
+                if (provider.id == params["id"]!!.toInt()) {
+                    provider.location = Location(params["lat"]!!.toDouble(), params["lon"]!!.toDouble())
+                }
+            }
             call.respond(HttpStatusCode.OK, "Location Updated Successfully")
         }
     }
