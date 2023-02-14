@@ -10,9 +10,8 @@ data class Provider(
     val id: Int, // unique id for provider
     val name: String, // name of provider
     val phone: PhoneNumber, // phone number of provider
-    val location: Location,
+    var location: Location,
     val services: ArrayList<String>, // tags of all the services the provider offers
     var areaServed: AreaServed, // area served by provider
-
-    val isActive: Boolean,
+    var isActive: Boolean,
 )
