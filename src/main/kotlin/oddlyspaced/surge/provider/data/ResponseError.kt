@@ -5,4 +5,5 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ResponseError(
     val message: String?,
+    val error: Boolean = true,
 )
