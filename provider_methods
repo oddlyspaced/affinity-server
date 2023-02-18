@@ -1,0 +1,9 @@
+provider
+- add dummy data
+- add/update provider
+- delete provider
+- fetch all providers [active / inactive]
+- fetch a specific provider
+- fetch all services across all providers
+- search for providers
+- update detail for a specific provider
