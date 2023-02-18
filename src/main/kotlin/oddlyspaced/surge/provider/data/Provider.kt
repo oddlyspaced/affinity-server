@@ -14,7 +14,7 @@ data class Provider(
     var location: Location,
     val services: ArrayList<String>, // tags of all the services the provider offers
     var areaServed: AreaServed, // area served by provider
-    var isActive: Boolean,
+    var status: ProviderStatus,
 ) {
     fun generateId() {
         this.id = providers.size + 1
