@@ -3,7 +3,6 @@ package oddlyspaced.surge.provider.data
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CallResponse(
-    val success: Boolean,
+data class ResponseError(
     val message: String?,
 )
