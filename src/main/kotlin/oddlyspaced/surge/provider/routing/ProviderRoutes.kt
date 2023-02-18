@@ -45,6 +45,13 @@ fun Route.providerRouting() {
                 it.isActive
             })
         }
+        /**
+         * fetches list of providers without filtering
+         * todo: rename this endpoint
+         */
+        get("every") {
+            call.respond(providers)
+        }
         get("specific") {
             val params = call.parameters
             providers.forEach {
