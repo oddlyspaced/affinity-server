@@ -2,123 +2,94 @@ package oddlyspaced.surge.provider.routing
 
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import oddlyspaced.surge.generateData
-import oddlyspaced.surge.provider.data.*
-import oddlyspaced.surge.provider.data.parameter.ProviderParameter
-import oddlyspaced.surge.provider.data.parameter.SearchParameter
-import oddlyspaced.surge.provider.data.parameter.toProviderInstance
-import oddlyspaced.surge.providers
-import oddlyspaced.surge.search
-import oddlyspaced.surge.services
+import oddlyspaced.surge.provider.data.CallResponse
+
 
 fun Route.providerRouting() {
     route("/provider") {
         /**
-         * fill dummy data
-         */
-        get("dummy") {
-            generateData()
-            call.respond(HttpStatusCode.OK, "Dummy data added. New length ${providers.size}")
-        }
-        /**
-         * register a provider
+         * adds a provider to the list
          */
         post("add") {
             try {
-                val data = call.receive<ProviderParameter>()
-                providers.add(data.toProviderInstance())
-                call.respond(HttpStatusCode.OK, "Provider added successfully")
+                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
             }
             catch (e: Exception) {
-                call.respond(HttpStatusCode.BadRequest, "Error!")
+                println(e.toString())
                 e.printStackTrace()
+                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
             }
         }
         /**
-         * fetches list of all providers
+         * gets all providers according to param
+         * @param all should return all params including inactive ones
          */
         get("all") {
-            call.respond(providers.filter {
-                it.isActive
-            })
-        }
-        /**
-         * fetches list of providers without filtering
-         * todo: rename this endpoint
-         */
-        get("every") {
-            call.respond(providers)
-        }
-        get("specific") {
-            val params = call.parameters
-            providers.forEach {
-                if (it.id == params["id"]!!.toInt()) {
-                    call.respond(HttpStatusCode.OK, it)
-                }
+            try {
+                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
+            }
+            catch (e: Exception) {
+                println(e.toString())
+                e.printStackTrace()
+                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
             }
         }
         /**
-         * fetches list of all services
+         * fetches a specific provider
+         * @param id id of the provider
          */
-        get("services") {
-            call.respond(services)
+        get("specific") {
+            try {
+                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
+            }
+            catch (e: Exception) {
+                println(e.toString())
+                e.printStackTrace()
+                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
+            }
         }
         /**
          * searches for providers
+         * todo: params
          */
-        post("search") {
-            // add more params like name, phone, service
-            println("ok")
+        get("search") {
             try {
-                println("omm : " + call.parameters.names())
-                val params = call.parameters
-                val searchParam = SearchParameter(
-                    params["limitCount"]!!.toInt(),
-                    params["limitDistance"]!!.toInt(),
-                    params["pickupLat"]!!.toDouble(),
-                    params["pickupLon"]!!.toDouble(),
-                    params["dropLat"]!!.toDouble(),
-                    params["dropLon"]!!.toDouble()
-                )
-                println(params)
-                call.respond(HttpStatusCode.OK, search(searchParam))
+                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
             }
             catch (e: Exception) {
+                println(e.toString())
                 e.printStackTrace()
+                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
             }
         }
-        post("areaupdate") {
-            // id, sourceLat, sourceLon, radius
-            val params = call.parameters
-            providers.forEach { provider ->
-                if (provider.id == params["id"]!!.toInt()) {
-                    provider.areaServed = AreaServed(Location(params["sourceLat"]!!.toDouble(), params["sourceLon"]!!.toDouble()), params["radius"]!!.toDouble())
-                }
+        /**
+         * updates info on a provider
+         * todo: params
+         */
+        post("/update") {
+            try {
+                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
             }
-            call.respond(HttpStatusCode.OK, "Area Updated Successfully")
+            catch (e: Exception) {
+                println(e.toString())
+                e.printStackTrace()
+                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
+            }
         }
-        post("statusupdate") {
-            // id isActive
-            val params = call.parameters
-            providers.forEach { provider ->
-                if (provider.id == params["id"]!!.toInt()) {
-                    provider.isActive = params["isActive"]!!.toBoolean()
-                }
+        /**
+         * gets all services
+         */
+        get("services") {
+            try {
+                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
             }
-            call.respond(HttpStatusCode.OK, "Status Updated Successfully")
-        }
-        post("locationupdate") {
-            val params = call.parameters
-            // id lat lon
-            providers.forEach { provider ->
-                if (provider.id == params["id"]!!.toInt()) {
-                    provider.location = Location(params["lat"]!!.toDouble(), params["lon"]!!.toDouble())
-                }
+            catch (e: Exception) {
+                println(e.toString())
+                e.printStackTrace()
+                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
             }
-            call.respond(HttpStatusCode.OK, "Location Updated Successfully")
         }
     }
 }
