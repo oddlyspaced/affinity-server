@@ -2,9 +2,16 @@ package oddlyspaced.surge.provider.routing
 
 import io.ktor.http.*
 import io.ktor.server.application.*
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import oddlyspaced.surge.provider.data.Provider
+import oddlyspaced.surge.provider.data.ProviderStatus
 import oddlyspaced.surge.provider.data.ResponseError
+import oddlyspaced.surge.provider.data.parameter.AreaUpdateParameter
+import oddlyspaced.surge.provider.data.parameter.LocationUpdateParameter
+import oddlyspaced.surge.provider.data.parameter.StatusUpdateParameter
+import oddlyspaced.surge.providers
 
 
 fun Route.providerRouting() {
@@ -14,7 +21,12 @@ fun Route.providerRouting() {
          */
         post("add") {
             try {
-                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
+                // todo: add check for id in order to
+                val provider = call.receive<Provider>()
+                provider.generateId()
+                providers.add(provider)
+                // todo check if this response can be improved
+                call.respond(HttpStatusCode.OK, ResponseError("Provider Added successfully", error = false))
             }
             catch (e: Exception) {
                 println(e.toString())
@@ -24,11 +36,19 @@ fun Route.providerRouting() {
         }
         /**
          * gets all providers according to param
-         * @param all should return all params including inactive ones
+         * @param status should return all params including inactive ones
          */
         get("all") {
             try {
-                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
+                val status = ProviderStatus.valueOf(call.parameters["status"] ?: ProviderStatus.UNDEFINED.toString())
+                if (status == ProviderStatus.UNDEFINED) {
+                    call.respond(HttpStatusCode.OK, providers)
+                }
+                else {
+                    call.respond(HttpStatusCode.OK, providers.filter { provider ->
+                        provider.status == status
+                    })
+                }
             }
             catch (e: Exception) {
                 println(e.toString())
@@ -42,7 +62,12 @@ fun Route.providerRouting() {
          */
         get("specific") {
             try {
-                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
+                val id = call.parameters["id"]?.toInt() ?: -1
+                call.respond(HttpStatusCode.OK, providers.find { provider ->
+                    provider.id == id
+                } ?: run {
+                    throw Exception("Provider Not Found")
+                })
             }
             catch (e: Exception) {
                 println(e.toString())
@@ -56,7 +81,8 @@ fun Route.providerRouting() {
          */
         get("search") {
             try {
-                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
+                // todo fix search logic
+                call.respond(HttpStatusCode.OK, providers)
             }
             catch (e: Exception) {
                 println(e.toString())
@@ -64,18 +90,57 @@ fun Route.providerRouting() {
                 call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
-        /**
-         * updates info on a provider
-         * todo: params
-         */
-        post("/update") {
-            try {
-                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
+        route("/update") {
+            post("location") {
+                try {
+                    val update = call.receive<LocationUpdateParameter>()
+                    for (provider in providers) {
+                        if (provider.id == update.id) {
+                            provider.location = update.newLocation
+                            call.respond(HttpStatusCode.OK, ResponseError("Location Updated Successfully"))
+                        }
+                    }
+                    call.respond(HttpStatusCode.BadRequest, ResponseError("Provider not found!"))
+                }
+                catch (e: Exception) {
+                    println(e.toString())
+                    e.printStackTrace()
+                    call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
+                }
             }
-            catch (e: Exception) {
-                println(e.toString())
-                e.printStackTrace()
-                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
+            post("status") {
+                try {
+                    val update = call.receive<StatusUpdateParameter>()
+                    for (provider in providers) {
+                        if (provider.id == update.id) {
+                            provider.status = update.newStatus
+                            call.respond(HttpStatusCode.OK, ResponseError("Status Updated Successfully"))
+                        }
+                    }
+                    call.respond(HttpStatusCode.BadRequest, ResponseError("Provider not found!"))
+                }
+                catch (e: Exception) {
+                    println(e.toString())
+                    e.printStackTrace()
+                    call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
+                }
+            }
+            post("area") {
+                try {
+                    val update = call.receive<AreaUpdateParameter>()
+                    for (provider in providers) {
+                        if (provider.id == update.id) {
+                            provider.areaServed = update.newArea
+                            call.respond(HttpStatusCode.OK, ResponseError("Area Served Updated Successfully"))
+                        }
+                    }
+                    call.respond(HttpStatusCode.BadRequest, ResponseError("Provider not found!"))
+                }
+                catch (e: Exception) {
+                    println(e.toString())
+                    e.printStackTrace()
+                    call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
+                }
             }
         }
         /**
