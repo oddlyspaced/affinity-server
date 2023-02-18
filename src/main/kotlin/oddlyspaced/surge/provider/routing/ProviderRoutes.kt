@@ -4,7 +4,7 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import oddlyspaced.surge.provider.data.CallResponse
+import oddlyspaced.surge.provider.data.ResponseError
 
 
 fun Route.providerRouting() {
@@ -14,12 +14,12 @@ fun Route.providerRouting() {
          */
         post("add") {
             try {
-                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
+                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
             }
             catch (e: Exception) {
                 println(e.toString())
                 e.printStackTrace()
-                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
+                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
         /**
@@ -28,12 +28,12 @@ fun Route.providerRouting() {
          */
         get("all") {
             try {
-                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
+                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
             }
             catch (e: Exception) {
                 println(e.toString())
                 e.printStackTrace()
-                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
+                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
         /**
@@ -42,12 +42,12 @@ fun Route.providerRouting() {
          */
         get("specific") {
             try {
-                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
+                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
             }
             catch (e: Exception) {
                 println(e.toString())
                 e.printStackTrace()
-                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
+                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
         /**
@@ -56,12 +56,12 @@ fun Route.providerRouting() {
          */
         get("search") {
             try {
-                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
+                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
             }
             catch (e: Exception) {
                 println(e.toString())
                 e.printStackTrace()
-                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
+                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
         /**
@@ -70,12 +70,12 @@ fun Route.providerRouting() {
          */
         post("/update") {
             try {
-                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
+                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
             }
             catch (e: Exception) {
                 println(e.toString())
                 e.printStackTrace()
-                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
+                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
         /**
@@ -83,12 +83,12 @@ fun Route.providerRouting() {
          */
         get("services") {
             try {
-                call.respond(HttpStatusCode.OK, CallResponse(success = true, "Provider Added"))
+                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
             }
             catch (e: Exception) {
                 println(e.toString())
                 e.printStackTrace()
-                call.respond(HttpStatusCode.BadRequest, CallResponse(success = false, e.stackTraceToString()))
+                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
     }
