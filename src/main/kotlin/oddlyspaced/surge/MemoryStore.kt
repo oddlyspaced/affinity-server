@@ -34,7 +34,7 @@ fun generateData() {
                     tempProviderPos,
                     (2..8).random().toDouble()
                 ),
-                true
+                ProviderStatus.ACTIVE,
             )
         )
     }
