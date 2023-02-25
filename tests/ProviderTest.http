@@ -2,12 +2,24 @@ POST http://127.0.0.1:4444/provider/add
 Content-Type: application/json
 
 {
-  "name": "PRovider NAme",
-  "countryCode": "+91",
-  "phoneNumber": "8888888888",
-  "lat": -0.2,
-  "lon": -0.1,
-  "services": ["tag1", "tag2"]
+  "name": "Test Provider",
+  "phone": {
+    "countryCode": "+91",
+    "phoneNumber": "1234123412"
+  },
+  "location": {
+    "lat": -0.1,
+    "lon": -0.2
+  },
+  "services": ["tag1", "tag2"],
+  "areaServed": {
+    "source": {
+      "lat": -0.9,
+      "lon": -0.8
+    },
+    "radius": 10.0
+  },
+  "status": "INACTIVE"
 }
 
 ###
