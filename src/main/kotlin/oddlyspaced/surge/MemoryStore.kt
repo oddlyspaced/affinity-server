@@ -5,6 +5,7 @@ import oddlyspaced.surge.provider.data.*
 import oddlyspaced.surge.provider.data.parameter.SearchParameter
 
 val providers = arrayListOf<Provider>()
+val providerAuths = arrayListOf<ProviderAuth>()
 
 val sourcePoint = Location(26.882883,80.925594)
 val services = arrayListOf<Service>()
@@ -18,9 +19,10 @@ fun generateData() {
             sourcePoint.lat + ((0..100).random() / 1000.0),
             sourcePoint.lon + ((0..100).random() / 1000.0),
         )
+        val newProviderId = (providers.size + 1)
         providers.add(
             Provider(
-                (providers.size + 1),
+                newProviderId,
                 fake.name.name(),
                 PhoneNumber(
                     fake.phoneNumber.countryCode.code(),
@@ -36,6 +38,9 @@ fun generateData() {
                 ),
                 ProviderStatus.ACTIVE,
             )
+        )
+        providerAuths.add(
+            ProviderAuth(newProviderId, "1234") // todo: fix this core logic
         )
     }
     generateServiceTags()
