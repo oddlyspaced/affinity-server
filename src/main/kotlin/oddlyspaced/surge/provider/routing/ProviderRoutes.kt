@@ -64,6 +64,25 @@ fun Route.providerRouting() {
                 call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
+        post("remove") {
+            try {
+                val providerId = call.parameters["id"]?.toInt() ?: -1
+                providers.filter {
+                    it.id == providerId
+                }.let {
+                    if (it.isEmpty()) {
+                        call.respond(HttpStatusCode.BadRequest, ResponseError("Provider ID not found"))
+                    }
+                    else {
+                        providers.remove(it[0])
+                        call.respond(HttpStatusCode.OK, ResponseError("Removed successfully", false))
+                    }
+                }
+            }
+            catch (e: Exception) {
+                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
+            }
+        }
         /**
          * gets all providers according to param
          * @param status should return all params including inactive ones
