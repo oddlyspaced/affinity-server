@@ -146,7 +146,7 @@ fun Route.providerRouting() {
                     for (provider in providers) {
                         if (provider.id == update.id) {
                             provider.location = update.newLocation
-                            call.respond(HttpStatusCode.OK, ResponseError("Location Updated Successfully"))
+                            call.respond(HttpStatusCode.OK, ResponseError("Location Updated Successfully", false))
                         }
                     }
                     call.respond(HttpStatusCode.BadRequest, ResponseError("Provider not found!"))
@@ -163,7 +163,7 @@ fun Route.providerRouting() {
                     for (provider in providers) {
                         if (provider.id == update.id) {
                             provider.status = update.newStatus
-                            call.respond(HttpStatusCode.OK, ResponseError("Status Updated Successfully"))
+                            call.respond(HttpStatusCode.OK, ResponseError("Status Updated Successfully", false))
                         }
                     }
                     call.respond(HttpStatusCode.BadRequest, ResponseError("Provider not found!"))
@@ -180,7 +180,7 @@ fun Route.providerRouting() {
                     for (provider in providers) {
                         if (provider.id == update.id) {
                             provider.areaServed = update.newArea
-                            call.respond(HttpStatusCode.OK, ResponseError("Area Served Updated Successfully"))
+                            call.respond(HttpStatusCode.OK, ResponseError("Area Served Updated Successfully", false))
                         }
                     }
                     call.respond(HttpStatusCode.BadRequest, ResponseError("Provider not found!"))
