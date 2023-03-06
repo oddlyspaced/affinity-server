@@ -52,11 +52,27 @@ fun Route.providerRouting() {
             try {
                 // todo: add check for id in order to
                 val provider = call.receive<Provider>()
-                provider.generateId()
-                providers.add(provider)
-                providerAuths.add(ProviderAuth(provider.id, "1234"))
+                if (provider.id != -1) {
+                    providers.filter {
+                        it.id == provider.id
+                    }.let {
+                        if (it.isEmpty()) {
+                            // ??? should not be possible ???
+                        }
+                        else {
+                            // todo update this logic to be more efficient
+                            providers[providers.indexOf(it[0])] = provider
+                            call.respond(HttpStatusCode.OK, ResponseError("Provider Updated successfully", error = false))
+                        }
+                    }
+                }
+                else {
+                    provider.generateId()
+                    providers.add(provider)
+                    providerAuths.add(ProviderAuth(provider.id, "1234"))
+                    call.respond(HttpStatusCode.OK, ResponseError("Provider Added successfully", error = false))
+                }
                 // todo check if this response can be improved
-                call.respond(HttpStatusCode.OK, ResponseError("Provider Added successfully", error = false))
             }
             catch (e: Exception) {
                 println(e.toString())
