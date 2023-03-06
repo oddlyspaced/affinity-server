@@ -23,6 +23,10 @@ Content-Type: application/json
 }
 
 ###
+POST http://127.0.0.1:4444/provider/remove?id=1
+Accept: application/json
+
+###
 GET http://127.0.0.1:4444/provider/all
 Accept: application/json
 
