@@ -8,9 +8,11 @@ import oddlyspaced.surge.plugins.configureSerialization
 import java.net.InetAddress
 
 fun main() {
-    println("Starting server at: ${InetAddress.getLocalHost().hostAddress}:4444")
-    generateData()
-    embeddedServer(Netty, port = 4444, module = Application::module).start(wait = true)
+    println("Starting server at: ${InetAddress.getLocalHost().hostAddress}:${AffinityConfiguration.APPLICATION_PORT}")
+    if (AffinityConfiguration.GENERATE_DUMMY_DATA) {
+        generateData()
+    }
+    embeddedServer(Netty, port = AffinityConfiguration.APPLICATION_PORT, module = Application::module).start(wait = true)
 }
 
 fun Application.module() {
