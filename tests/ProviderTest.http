@@ -27,6 +27,10 @@ POST http://127.0.0.1:4444/provider/remove?id=1
 Accept: application/json
 
 ###
+POST http://127.0.0.1:4444/provider/authenticate?id=1&password=12341
+Accept: application/json
+
+###
 GET http://127.0.0.1:4444/provider/all
 Accept: application/json
 
