@@ -34,3 +34,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+providers.json
+log.txt
