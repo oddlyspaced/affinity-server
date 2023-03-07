@@ -14,6 +14,7 @@ import oddlyspaced.surge.provider.data.parameter.LocationUpdateParameter
 import oddlyspaced.surge.provider.data.parameter.StatusUpdateParameter
 import oddlyspaced.surge.providerAuths
 import oddlyspaced.surge.providers
+import oddlyspaced.surge.services
 
 
 fun Route.providerRouting() {
@@ -213,7 +214,7 @@ fun Route.providerRouting() {
          */
         get("services") {
             try {
-                call.respond(HttpStatusCode.OK, ResponseError("Provider Added"))
+                call.respond(HttpStatusCode.OK, services)
             }
             catch (e: Exception) {
                 println(e.toString())
