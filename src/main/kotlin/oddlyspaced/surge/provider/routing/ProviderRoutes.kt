@@ -5,6 +5,9 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import oddlyspaced.surge.provider.data.Provider
 import oddlyspaced.surge.provider.data.ProviderAuth
 import oddlyspaced.surge.provider.data.ProviderStatus
@@ -15,7 +18,18 @@ import oddlyspaced.surge.provider.data.parameter.StatusUpdateParameter
 import oddlyspaced.surge.providerAuths
 import oddlyspaced.surge.providers
 import oddlyspaced.surge.services
+import oddlyspaced.surge.util.Logger
 
+
+fun dumpCallToLog(msg: String, call: ApplicationCall, exception: Exception) {
+    CoroutineScope(Dispatchers.IO).launch{
+        Logger.println("-----")
+        Logger.println(msg)
+        Logger.println("${call.parameters}")
+        Logger.println(call.receiveText())
+        Logger.println(exception.stackTraceToString())
+    }
+}
 
 fun Route.providerRouting() {
     route("/provider") {
@@ -43,6 +57,7 @@ fun Route.providerRouting() {
                 }
             }
             catch (e: Exception) {
+                dumpCallToLog("Error in authenticate", call, e)
                 call.respond(HttpStatusCode.Forbidden, ResponseError("Authentication Unsuccessful"))
             }
         }
@@ -76,8 +91,7 @@ fun Route.providerRouting() {
                 // todo check if this response can be improved
             }
             catch (e: Exception) {
-                println(e.toString())
-                e.printStackTrace()
+                dumpCallToLog("Error in add", call, e)
                 call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
@@ -97,6 +111,7 @@ fun Route.providerRouting() {
                 }
             }
             catch (e: Exception) {
+                dumpCallToLog("Error in remove", call, e)
                 call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
@@ -117,8 +132,7 @@ fun Route.providerRouting() {
                 }
             }
             catch (e: Exception) {
-                println(e.toString())
-                e.printStackTrace()
+                dumpCallToLog("Error in all", call, e)
                 call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
@@ -136,8 +150,7 @@ fun Route.providerRouting() {
                 })
             }
             catch (e: Exception) {
-                println(e.toString())
-                e.printStackTrace()
+                dumpCallToLog("Error in specific", call, e)
                 call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
@@ -151,8 +164,7 @@ fun Route.providerRouting() {
                 call.respond(HttpStatusCode.OK, providers)
             }
             catch (e: Exception) {
-                println(e.toString())
-                e.printStackTrace()
+                dumpCallToLog("Error in search", call, e)
                 call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
@@ -169,8 +181,7 @@ fun Route.providerRouting() {
                     call.respond(HttpStatusCode.BadRequest, ResponseError("Provider not found!"))
                 }
                 catch (e: Exception) {
-                    println(e.toString())
-                    e.printStackTrace()
+                    dumpCallToLog("Error in update", call, e)
                     call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
                 }
             }
@@ -186,8 +197,7 @@ fun Route.providerRouting() {
                     call.respond(HttpStatusCode.BadRequest, ResponseError("Provider not found!"))
                 }
                 catch (e: Exception) {
-                    println(e.toString())
-                    e.printStackTrace()
+                    dumpCallToLog("Error in status", call, e)
                     call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
                 }
             }
@@ -203,8 +213,7 @@ fun Route.providerRouting() {
                     call.respond(HttpStatusCode.BadRequest, ResponseError("Provider not found!"))
                 }
                 catch (e: Exception) {
-                    println(e.toString())
-                    e.printStackTrace()
+                    dumpCallToLog("Error in area", call, e)
                     call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
                 }
             }
@@ -217,8 +226,7 @@ fun Route.providerRouting() {
                 call.respond(HttpStatusCode.OK, services)
             }
             catch (e: Exception) {
-                println(e.toString())
-                e.printStackTrace()
+                dumpCallToLog("Error in services", call, e)
                 call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
