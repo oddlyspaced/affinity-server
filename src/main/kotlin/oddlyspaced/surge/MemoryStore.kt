@@ -69,25 +69,39 @@ private fun generateServiceTags() {
 /**
  * handles search logic
  * copies over the provider list and cuts them short based on the parameters
+ * @param params search param body from the api call
+ * @return list of providers that qualify the params
  */
 fun search(params: SearchParameter): List<Provider> {
     val results = providers.filter { provider ->
         doesProviderMatch(provider, params)
     }
-    return results
+    return if (results.size > params.limitCount) {
+        results.sortedBy {
+            it.location.distanceTo(params.pickupLocation)
+        }.subList(0, params.limitCount)
+    }
+    else {
+        results
+    }
 }
 
 /**
  * checks if a provided provider instance qualifies with the provided search params
- * todo: add logic
+ * logic:
+ * for a provider to qualify the pickup location and drop location must exist in their served area
+ * their current location must exist withing the limit distance
+ * their service and search filters must have some overlap if search filter is not empty
+ * @param provider provider to check for
+ * @param params search parameters from api call
  */
 private fun doesProviderMatch(provider: Provider, params: SearchParameter): Boolean {
-//    val doesProviderContainsFilter = (params.filterServices?.filter { service ->
-//        provider.services.contains(service)
-//    } ?: run {
-//        arrayListOf("def")
-//    }).size > 1
-    return (provider.areaServed.isPointInRadius(Location(params.pickupLat, params.pickupLon)) && provider.areaServed.isPointInRadius(Location(params.dropLat, params.dropLon)))
+    val isPickupInRange = provider.areaServed.isPointInRadius(params.pickupLocation)
+    val isDropInRange = provider.areaServed.isPointInRadius(params.dropLocation)
+    val isProviderInRange = provider.location.distanceTo(params.pickupLocation) <= params.limitDistance.toDouble()
+    val overlappingFilters = if (params.serviceFilters.isEmpty()) true else provider.services.intersect(params.serviceFilters.toSet()).isNotEmpty()
+
+    return (isPickupInRange && isDropInRange && isProviderInRange && overlappingFilters)
 }
 
 fun ArrayList<String>.flat(): ArrayList<String> {
