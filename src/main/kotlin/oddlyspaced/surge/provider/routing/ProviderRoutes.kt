@@ -160,7 +160,7 @@ fun Route.providerRouting() {
          * searches for providers
          * todo: params
          */
-        get("search") {
+        post("search") {
             try {
                 val params = call.receive<SearchParameter>()
                 call.respond(HttpStatusCode.OK, search(params))
