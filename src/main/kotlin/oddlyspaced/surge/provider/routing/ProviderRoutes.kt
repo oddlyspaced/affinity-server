@@ -14,9 +14,11 @@ import oddlyspaced.surge.provider.data.ProviderStatus
 import oddlyspaced.surge.provider.data.ResponseError
 import oddlyspaced.surge.provider.data.parameter.AreaUpdateParameter
 import oddlyspaced.surge.provider.data.parameter.LocationUpdateParameter
+import oddlyspaced.surge.provider.data.parameter.SearchParameter
 import oddlyspaced.surge.provider.data.parameter.StatusUpdateParameter
 import oddlyspaced.surge.providerAuths
 import oddlyspaced.surge.providers
+import oddlyspaced.surge.search
 import oddlyspaced.surge.services
 import oddlyspaced.surge.util.Logger
 
@@ -160,8 +162,8 @@ fun Route.providerRouting() {
          */
         get("search") {
             try {
-                // todo fix search logic
-                call.respond(HttpStatusCode.OK, providers)
+                val params = call.receive<SearchParameter>()
+                call.respond(HttpStatusCode.OK, search(params))
             }
             catch (e: Exception) {
                 dumpCallToLog("Error in search", call, e)
