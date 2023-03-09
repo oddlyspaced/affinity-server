@@ -22,7 +22,7 @@ import oddlyspaced.surge.search
 import oddlyspaced.surge.services
 import oddlyspaced.surge.util.Logger
 
-
+// helper function to store call and error trace to logs
 fun dumpCallToLog(msg: String, call: ApplicationCall, exception: Exception) {
     CoroutineScope(Dispatchers.IO).launch{
         Logger.println("-----")
@@ -33,10 +33,63 @@ fun dumpCallToLog(msg: String, call: ApplicationCall, exception: Exception) {
     }
 }
 
+/**
+ * all provider related action endpoints
+ */
 fun Route.providerRouting() {
     route("/provider") {
         /**
+         * gets all providers according to specified status
+         */
+        get("all") {
+            try {
+                val status = ProviderStatus.valueOf(call.parameters["status"] ?: ProviderStatus.UNDEFINED.toString())
+                if (status == ProviderStatus.UNDEFINED) {
+                    call.respond(HttpStatusCode.OK, providers)
+                }
+                else {
+                    call.respond(HttpStatusCode.OK, providers.filter { provider ->
+                        provider.status == status
+                    })
+                }
+            }
+            catch (e: Exception) {
+                dumpCallToLog("Error in all", call, e)
+                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
+            }
+        }
+        /**
+         * fetches a specific provider
+         */
+        get("specific") {
+            try {
+                val id = call.parameters["id"]?.toInt() ?: -1
+                call.respond(HttpStatusCode.OK, providers.find { provider ->
+                    provider.id == id
+                } ?: run {
+                    throw Exception("Provider Not Found")
+                })
+            }
+            catch (e: Exception) {
+                dumpCallToLog("Error in specific", call, e)
+                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
+            }
+        }
+        /**
+         * gets all services
+         */
+        get("services") {
+            try {
+                call.respond(HttpStatusCode.OK, services)
+            }
+            catch (e: Exception) {
+                dumpCallToLog("Error in services", call, e)
+                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
+            }
+        }
+        /**
          * dummy authentication endpoint
+         * todo: improve this
          */
         post("authenticate") {
             try {
@@ -68,7 +121,6 @@ fun Route.providerRouting() {
          */
         post("add") {
             try {
-                // todo: add check for id in order to
                 val provider = call.receive<Provider>()
                 if (provider.id != -1) {
                     providers.filter {
@@ -90,13 +142,15 @@ fun Route.providerRouting() {
                     providerAuths.add(ProviderAuth(provider.id, "1234"))
                     call.respond(HttpStatusCode.OK, ResponseError("Provider Added successfully", error = false))
                 }
-                // todo check if this response can be improved
             }
             catch (e: Exception) {
                 dumpCallToLog("Error in add", call, e)
                 call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
+        /**
+         * removes a provider
+         */
         post("remove") {
             try {
                 val providerId = call.parameters["id"]?.toInt() ?: -1
@@ -118,47 +172,7 @@ fun Route.providerRouting() {
             }
         }
         /**
-         * gets all providers according to param
-         * @param status should return all params including inactive ones
-         */
-        get("all") {
-            try {
-                val status = ProviderStatus.valueOf(call.parameters["status"] ?: ProviderStatus.UNDEFINED.toString())
-                if (status == ProviderStatus.UNDEFINED) {
-                    call.respond(HttpStatusCode.OK, providers)
-                }
-                else {
-                    call.respond(HttpStatusCode.OK, providers.filter { provider ->
-                        provider.status == status
-                    })
-                }
-            }
-            catch (e: Exception) {
-                dumpCallToLog("Error in all", call, e)
-                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
-            }
-        }
-        /**
-         * fetches a specific provider
-         * @param id id of the provider
-         */
-        get("specific") {
-            try {
-                val id = call.parameters["id"]?.toInt() ?: -1
-                call.respond(HttpStatusCode.OK, providers.find { provider ->
-                    provider.id == id
-                } ?: run {
-                    throw Exception("Provider Not Found")
-                })
-            }
-            catch (e: Exception) {
-                dumpCallToLog("Error in specific", call, e)
-                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
-            }
-        }
-        /**
-         * searches for providers
-         * todo: params
+         * searches for providers according to specified params
          */
         post("search") {
             try {
@@ -170,7 +184,13 @@ fun Route.providerRouting() {
                 call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
+        /**
+         * update route
+         */
         route("/update") {
+            /**
+             * update location of a provider
+             */
             post("location") {
                 try {
                     val update = call.receive<LocationUpdateParameter>()
@@ -187,6 +207,9 @@ fun Route.providerRouting() {
                     call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
                 }
             }
+            /**
+             * update status of a provider
+             */
             post("status") {
                 try {
                     val update = call.receive<StatusUpdateParameter>()
@@ -203,6 +226,9 @@ fun Route.providerRouting() {
                     call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
                 }
             }
+            /**
+             * update area of a provider
+             */
             post("area") {
                 try {
                     val update = call.receive<AreaUpdateParameter>()
@@ -218,18 +244,6 @@ fun Route.providerRouting() {
                     dumpCallToLog("Error in area", call, e)
                     call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
                 }
-            }
-        }
-        /**
-         * gets all services
-         */
-        get("services") {
-            try {
-                call.respond(HttpStatusCode.OK, services)
-            }
-            catch (e: Exception) {
-                dumpCallToLog("Error in services", call, e)
-                call.respond(HttpStatusCode.BadRequest, ResponseError(e.stackTraceToString()))
             }
         }
     }
