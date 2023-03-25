@@ -10,7 +10,7 @@ Affinity is meant to be used by organisations or individuals that offer some for
 ## Setting up
 Step 1: Clone the server repo to the server where the project is going to be deployed
 
-    git clone https://github.com/oddlyspaced/affinity-central.git
+    git clone https://github.com/oddlyspaced/affinity-server.git
 
 Step 2: Open `AffinityConfiguration` class and edit the class parameters according to your requirements. All the parameters and their applications are documented in the class itself.
 
