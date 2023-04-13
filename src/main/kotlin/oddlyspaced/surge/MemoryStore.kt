@@ -14,7 +14,7 @@ val serviceRankMap = hashMapOf<String, Int>()
 // todo: improve and make this piece of logic more efficient
 fun generateData() {
     val fake = Faker()
-    for (i in 0 until 10) {
+    for (i in 0 until AffinityConfiguration.DUMMY_PROVIDER_AMOUNT) {
         val tempProviderPos = Location(
             sourcePoint.lat + ((0..100).random() / 1000.0),
             sourcePoint.lon + ((0..100).random() / 1000.0),

@@ -12,6 +12,8 @@ class AffinityConfiguration {
         const val APPLICATION_PORT = 5030
         // should dummy data be generated
         const val GENERATE_DUMMY_DATA = true
+        // numbers of dummy providers to create
+        const val DUMMY_PROVIDER_AMOUNT = 25
         // should data be restored from providers.json on first start
         const val RESTORE_DATA_ON_BOOT = false
         // should data be stored to providers.json
