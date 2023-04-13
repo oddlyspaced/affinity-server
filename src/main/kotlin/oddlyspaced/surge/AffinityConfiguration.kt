@@ -1,5 +1,7 @@
 package oddlyspaced.surge
 
+import oddlyspaced.surge.provider.data.Location
+
 /**
  * Configuration class for server
  * todo: make this class load from a config file or command line params
@@ -16,5 +18,7 @@ class AffinityConfiguration {
         const val SAVE_DATA_TO_STORAGE = true
         // interval between write to providers.json file
         const val SAVE_DATA_INTERVAL = 1000 * 60 * 60L // ms time
+        // dummy data source point
+        val SOURCE_DUMMY_DATA = Location(26.888030, 80.941470)
     }
 }

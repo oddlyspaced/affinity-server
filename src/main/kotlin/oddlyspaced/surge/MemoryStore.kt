@@ -7,7 +7,7 @@ import oddlyspaced.surge.provider.data.parameter.SearchParameter
 val providers = arrayListOf<Provider>()
 val providerAuths = arrayListOf<ProviderAuth>()
 
-val sourcePoint = Location(26.882883,80.925594)
+val sourcePoint = AffinityConfiguration.SOURCE_DUMMY_DATA
 val services = arrayListOf<Service>()
 val serviceRankMap = hashMapOf<String, Int>()
 
